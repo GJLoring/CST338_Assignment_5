@@ -38,7 +38,7 @@ class CardTable{
    public JPanel pnlComputerHand, pnlHumanHand, pnlPlayArea;
    
    CardTable(String title, int numCardsPerHand, int numPlayers) {
-      
+      // Todo
    }
 }
    
@@ -127,7 +127,7 @@ class GUICard{
    }
 
    static public Icon getIcon(Card card) {
-      return iconCards[valueAsInt(card)][suitAsInt(card)];  //TOD FIX ME
+      return iconCards[valueAsInt(card)][suitAsInt(card)];  //TOD Check ME
    }
    
    static public Icon getBackCardIcon(){
@@ -281,12 +281,12 @@ class Hand
    }
    
    public boolean sort(){
-      return true;
+      return true;   //Todo write me
    }
 
    public Card playCard(int k)
    {
-      return myCards[k];
+      return myCards[k];  //Todo write me
    }
    
    // Returns and removes the card in the top occupied position of the myCards
@@ -359,7 +359,7 @@ class Deck
    //if no parameters are passed 1 pack is assumed
    public Deck()
    {
-      this(1);
+      this(1);  //Todo write me
    }
    
    // Accessor for number of cards
