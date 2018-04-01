@@ -61,6 +61,7 @@ class GUICard{
             + turnIntIntoCardSuit(j) + ".gif");
          }
       }
+      iconBack = new ImageIcon("images/BK.gif");
    }
    
    
@@ -83,6 +84,12 @@ class GUICard{
       return returnVal;
    }
    
+   
+   static private int valueAsInt(Card card){
+      return 0;  //TOD FIX ME
+   }
+
+   
    // turns 0 - 3 into "C", "D", "H", "S"
    static String turnIntIntoCardSuit(int j)
    {
@@ -101,11 +108,20 @@ class GUICard{
       }
       return returnSuit;
    }
-   /*
-   static public Icon getIcon(Card card) {
-      return new Icon;
+   
+   
+   static private int suitAsInt(Card card){
+      return 0;  //TOD FIX ME
    }
-   static public Icon getBackCardIcon(){}*/
+
+   static public Icon getIcon(Card card) {
+      return iconCards[valueAsInt(card)][suitAsInt(card)];  //TOD FIX ME
+   }
+   
+   static public Icon getBackCardIcon(){
+      return iconBack;
+   }
+
 }    
 
 //Classes copied ofver from assignment M3
@@ -402,11 +418,11 @@ class Deck
    
    public boolean addCard(Card x)
    {
-      return true;
+      return true;    //TOD FIX ME
    }   
    public Card removeCard( Card k)
    {
-      return this.inspectCard(1);
+      return this.inspectCard(1);    //TOD FIX ME
    }
 
    
