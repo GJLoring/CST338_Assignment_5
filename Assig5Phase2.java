@@ -28,19 +28,49 @@ public class Assig5Phase2
       }   
 }  
 
-class CardTable{
+class CardTable extends JFrame
+{
    static int MAX_CARDS_PER_HAND = 56;
-   static int MAX_PLAYERS = 2;  // for now, we only allow 2 person games
+   static int MAX_PLAYERS = 2;
    
    private int numCardsPerHand;
    private int numPlayers;
-
-   public JPanel pnlComputerHand, pnlHumanHand, pnlPlayArea;
    
-   CardTable(String title, int numCardsPerHand, int numPlayers) {
-      // Todo
+   public JPanel pnlComputerHand;
+   public JPanel pnlHumanHand;
+   public JPanel pnlPlayArea;
+   
+   public static void main(String[] args){
+      CardTable demoCard = new CardTable("Demo Card", 10,1);
    }
-}
+   
+   CardTable(String title, int numCardsPerHand, int numPlayers){
+      if(numCardsPerHand <= MAX_CARDS_PER_HAND && numPlayers <= MAX_PLAYERS) {
+         
+         JFrame frame = new JFrame(title);
+         frame.setSize(800,600);
+         frame.setLayout(new GridLayout(3,1));
+         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+         
+         pnlComputerHand  = new JPanel();
+         pnlComputerHand.setBorder(BorderFactory.createTitledBorder("Computer Hand"));
+         
+         pnlPlayArea = new JPanel();
+         pnlPlayArea.setLayout(new GridLayout(1,numPlayers));
+         pnlPlayArea.setBorder(BorderFactory.createTitledBorder("Playing Hand"));
+         
+         pnlHumanHand = new JPanel();    
+         pnlHumanHand.setLayout(new GridLayout(numCardsPerHand,numPlayers));
+         pnlHumanHand.setBorder(BorderFactory.createTitledBorder("Your Hand"));
+         
+         frame.add(pnlComputerHand);
+         frame.add(pnlPlayArea);
+         frame.add(pnlHumanHand);
+         
+         frame.setVisible(true);
+         
+      }
+   }
    
 class GUICard{   
    private static Icon[][] iconCards = new ImageIcon[14][4]; // 14 = A thru K + joker
