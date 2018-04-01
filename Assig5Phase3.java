@@ -29,6 +29,22 @@ public class Assig5Phase3
       // Test Assignment
       System.out.println("Phase 3\n");
  
+      /*
+
+You instantiate a CardGameFramework object at the top of main().
+
+You deal() from it (one statement).
+
+In the section where you // CREATE LABELS ...,  instead of using generateRandomCard() to pick an Icon, you use inspectCard() to do so.
+
+Make sure that it produces the same output as Phase 2 before coding your game below.
+   5. "High-Card" Game
+
+--You are now perfectly positioned to write a game.  You will need an action listener and some rules.  The simplest game would be "high-card" in which you and the computer each play a card, and the high card takes both (which you place somewhere in a winnings[] array, not your hand).  You have to add JLabels like "You Win" or "Computer Wins".  You need to decide how to select a card from your hand like maybe making each card its own button. Or other ideas??  Also, how does the computer play?  Will you tell it to always try to win by playing the smallest available card that beats yours, and if it can't win, play its smallest card?  Maybe it should intentionally lose certain rounds in order to preserve cards.  You need to decide who plays first (maybe winner of last round?). 
+
+--You need to figure out how to update your cards or the computer's cards to reflect one fewer cards every round so that hands get smaller.  This is the fun part!
+      */
+
       }   
 }      
 
@@ -37,9 +53,6 @@ class CardTable extends JFrame
 {
    static int MAX_CARDS_PER_HAND = 56;
    static int MAX_PLAYERS = 2;  // for now, we only allow 2 person games
-   
-   private int numCardsPerHand;
-   private int numPlayers;
 
    public JPanel pnlComputerHand, pnlHumanHand, pnlPlayArea;
    
@@ -119,7 +132,7 @@ class GUICard{
       String[] value = {"A", "2", "3", "4", "5", "6", "7", "8", "9",
             "T", "J", "Q", "K", "X"};
       for(int i = 0; i < value.length; i++){
-         if(value[i].equals(card.getValue()))
+         if(value[i].equals(String.valueOf(card.getValue())))
             returnVal = i;
       }   
       return returnVal; 
@@ -149,7 +162,7 @@ class GUICard{
       int returnVal = 0;
       String[] value = {"C", "D", "H", "S"};
       for(int i = 0; i < value.length; i++){
-         if(value[i].equals(card.getSuit()))
+         if(value[i].equals(String.valueOf(card.getSuit())))
             returnVal = i;
       }   
       return returnVal; 
