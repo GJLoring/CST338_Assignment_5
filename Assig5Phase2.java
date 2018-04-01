@@ -86,7 +86,14 @@ class GUICard{
    
    
    static private int valueAsInt(Card card){
-      return 0;  //TOD FIX ME
+      int returnVal = 0;
+      String[] value = {"A", "2", "3", "4", "5", "6", "7", "8", "9",
+            "T", "J", "Q", "K", "X"};
+      for(int i = 0; i < value.length; i++){
+         if(value[i].equals(card.getValue()))
+            returnVal = i;
+      }   
+      return returnVal; 
    }
 
    
@@ -109,9 +116,14 @@ class GUICard{
       return returnSuit;
    }
    
-   
    static private int suitAsInt(Card card){
-      return 0;  //TOD FIX ME
+      int returnVal = 0;
+      String[] value = {"C", "D", "H", "S"};
+      for(int i = 0; i < value.length; i++){
+         if(value[i].equals(card.getSuit()))
+            returnVal = i;
+      }   
+      return returnVal; 
    }
 
    static public Icon getIcon(Card card) {
