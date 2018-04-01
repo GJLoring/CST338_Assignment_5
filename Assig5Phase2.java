@@ -3,7 +3,7 @@
  * Add Card Framework and create game "High Card".
  * Authors: Christian Guerrero, Jose Garcia, Grace Alvarez, Gabriel Loring
  * Last Changed: March 30th, 2018
- * 
+ *
  */
 //import CardGameFramework.*;
 import javax.swing.*;
@@ -11,72 +11,70 @@ import java.awt.*;
 import java.util.*;
 
 public class Assig5Phase2
-{  
+{
    public static void main(String[] args)
    {
-      
+
       Integer numPacksPerDeck = 1;
       Integer numJokersPerPack = 0;
       Integer numUnusedCardsPerPack = 0;
       Card[] unusedCardsPerPack = null;
       Integer NUM_PLAYERS= 2;
       Integer NUM_CARDS_PER_HAND= 2;
-      
+
       // Test Assignment
       System.out.println("Phase 2\n");
- 
-      }   
-}  
+	  CardTable demoCard = new CardTable("Demo Card", 10,1);
+	}
+}
 
 class CardTable extends JFrame
 {
    static int MAX_CARDS_PER_HAND = 56;
    static int MAX_PLAYERS = 2;
-   
+
    private int numCardsPerHand;
    private int numPlayers;
-   
+
    public JPanel pnlComputerHand;
    public JPanel pnlHumanHand;
    public JPanel pnlPlayArea;
-   
-   public static void main(String[] args){
-      CardTable demoCard = new CardTable("Demo Card", 10,1);
-   }
-   
+
    CardTable(String title, int numCardsPerHand, int numPlayers){
       if(numCardsPerHand <= MAX_CARDS_PER_HAND && numPlayers <= MAX_PLAYERS) {
-         
+
          JFrame frame = new JFrame(title);
          frame.setSize(800,600);
          frame.setLayout(new GridLayout(3,1));
          frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-         
+
          pnlComputerHand  = new JPanel();
          pnlComputerHand.setBorder(BorderFactory.createTitledBorder("Computer Hand"));
-         
+
          pnlPlayArea = new JPanel();
          pnlPlayArea.setLayout(new GridLayout(1,numPlayers));
          pnlPlayArea.setBorder(BorderFactory.createTitledBorder("Playing Hand"));
-         
-         pnlHumanHand = new JPanel();    
+
+         pnlHumanHand = new JPanel();
          pnlHumanHand.setLayout(new GridLayout(numCardsPerHand,numPlayers));
          pnlHumanHand.setBorder(BorderFactory.createTitledBorder("Your Hand"));
-         
+
          frame.add(pnlComputerHand);
          frame.add(pnlPlayArea);
          frame.add(pnlHumanHand);
-         
+
          frame.setVisible(true);
-         
+
       }
    }
-   
-class GUICard{   
+
+}
+
+class GUICard{
    private static Icon[][] iconCards = new ImageIcon[14][4]; // 14 = A thru K + joker
     private static Icon iconBack;
     static boolean iconsLoaded = false;
-   
+
    static void loadCardIcons()
    {
       // build the file names ("AC.gif", "2C.gif", "3C.gif", "TC.gif", etc.)
@@ -87,14 +85,14 @@ class GUICard{
       {
          for(int k = 0; k <= 13; k++)
          {
-            iconCards[k][j] = new ImageIcon("images/" + turnIntIntoCardValue(k) 
+            iconCards[k][j] = new ImageIcon("images/" + turnIntIntoCardValue(k)
             + turnIntIntoCardSuit(j) + ".gif");
          }
       }
       iconBack = new ImageIcon("images/BK.gif");
    }
-   
-   
+
+
    // turns 0 - 13 into "A", "2", "3", ... "Q", "K", "X"
    static String turnIntIntoCardValue(int k)
    {
@@ -113,8 +111,8 @@ class GUICard{
       }
       return returnVal;
    }
-   
-   
+
+
    static private int valueAsInt(Card card){
       int returnVal = 0;
       String[] value = {"A", "2", "3", "4", "5", "6", "7", "8", "9",
@@ -122,18 +120,18 @@ class GUICard{
       for(int i = 0; i < value.length; i++){
          if(value[i].equals(card.getValue()))
             returnVal = i;
-      }   
-      return returnVal; 
+      }
+      return returnVal;
    }
 
-   
+
    // turns 0 - 3 into "C", "D", "H", "S"
    static String turnIntIntoCardSuit(int j)
    {
       // an idea for another helper method (do it differently if you wish)
       String returnSuit = null;
       String[] value = {"C", "D", "H", "S"};
-      
+
       if(j >= 0 && j <= 3)
       {
          returnSuit = value[j];
@@ -145,54 +143,54 @@ class GUICard{
       }
       return returnSuit;
    }
-   
+
    static private int suitAsInt(Card card){
       int returnVal = 0;
       String[] value = {"C", "D", "H", "S"};
       for(int i = 0; i < value.length; i++){
          if(value[i].equals(card.getSuit()))
             returnVal = i;
-      }   
-      return returnVal; 
+      }
+      return returnVal;
    }
 
    static public Icon getIcon(Card card) {
       return iconCards[valueAsInt(card)][suitAsInt(card)];  //TOD Check ME
    }
-   
+
    static public Icon getBackCardIcon(){
       return iconBack;
    }
 
-}    
+}
 
 //Classes copied ofver from assignment M3
 class Card
 {
    //A Public enum Type with added members
    public enum Suit{clubs, diamonds, hearts, spades};
-   
+
    //card values, T for ten
-   public static final char[] cardValue = {'A', '2', '3', '4', '5', '6', '7', 
+   public static final char[] cardValue = {'A', '2', '3', '4', '5', '6', '7',
       '8', '9', 'T', 'J', 'Q', 'K'};
-   
+
    //private member data
    private char value;
    private Suit suit;
    private boolean errorFlag;
-   
+
    //Constructor with parameters value and suit
    public Card(char value, Suit suit)
    {
       set(value, suit);
    }
-   
+
    //Default constructor sets value to "A" and suit to "spades" when value and suit not supplied
    public Card()
    {
       set('A', Suit.spades);
    }
-   
+
    /*
     * Stringizer that client can use prior to displaying card
     * provides clean representation of the card
@@ -205,11 +203,11 @@ class Card
       }
       return String.valueOf(value) + " of " + suit;
    }
-   
+
    /*
     * Mutator that accepts legal values.
     * When bad values are passed, errorFlag is set to true
-    * When good values are passed they are stored and errorFlag is set to false 
+    * When good values are passed they are stored and errorFlag is set to false
    */
    public boolean set(char value, Suit suit)
    {
@@ -226,25 +224,25 @@ class Card
          return false;
       }
    }
- 
+
    //Accessor that returns a cards value
    public char getValue()
    {
       return value;
    }
-   
+
     //Accessor that returns a cards suit
    public Suit getSuit()
    {
       return suit;
    }
-   
+
    //Accessor that returns errorFlag
    public boolean getErrorFlag()
    {
       return errorFlag;
    }
-   
+
    //Returns true if all the fields(members) are identical and false, otherwise
    public boolean equals(Card card)
    {
@@ -254,14 +252,14 @@ class Card
       }
       return false;
    }
-   
+
    /*
     * Private method that returns true or false, depending on the legality of the parameters.
     * Note that, although it may be impossible for suit to be illegal (due to its enum-ness),
     * we pass it, anyway, in anticipation of possible changes to the type from enum to, say,
     * char or int, someday.  We only need to test value, at this time.
     * */
-   
+
 
    private boolean isValid(char value, Suit suit)
    {
@@ -309,7 +307,7 @@ class Hand
       numCards++;
       return true;
    }
-   
+
    public boolean sort(){
       return true;   //Todo write me
    }
@@ -318,7 +316,7 @@ class Hand
    {
       return myCards[k];  //Todo write me
    }
-   
+
    // Returns and removes the card in the top occupied position of the myCards
    // array
    public Card playCard()
@@ -368,37 +366,37 @@ class Deck
 {
    //Deck capacity set to six packs by 52 cards per pack
    public static final int MAX_CARDS = 6 * 52;
-   
+
    //Private static member data
    private static Card[] masterPack;
    private static boolean isExecuted;
-   
+
    //Private member data
    private Card[] cards;
    private int topCard;
    private int numPacks;
-   
+
    //Constructor to initialize masterpack
    public Deck(int numPacks)
    {
       allocateMasterPack();
       this.cards = masterPack;
       init(numPacks);
-   } 
-   
+   }
+
    //if no parameters are passed 1 pack is assumed
    public Deck()
    {
       this(1);  //Todo write me
    }
-   
+
    // Accessor for number of cards
    public int getNumCards()
    {
       return cards.length;
    }
-   
-   // 
+
+   //
    public void init(int numPacks)
    {
       this.numPacks = numPacks;
@@ -422,9 +420,9 @@ class Deck
       {
          return;
       }
-   } 
-   
-   // Used to shuffle the cards[] 
+   }
+
+   // Used to shuffle the cards[]
    public void shuffle()
    {
       Random rand = new Random();
@@ -435,9 +433,9 @@ class Deck
          cards[randomIndex] = cards[k];
          cards[k] = tempCard;
       }
-   } 
-   
-   // Used to deal cards 
+   }
+
+   // Used to deal cards
    public Card dealCard()
    {
       if(topCard == 0)
@@ -449,27 +447,27 @@ class Deck
       topCard--;
       return returnCard;
    }
-   
-   // Accessor returns the value of numPacks * 52 using topCard 
+
+   // Accessor returns the value of numPacks * 52 using topCard
    public int getTopCard ()
    {
       topCard = numPacks * 52;
       return topCard;
    }
 
-   
+
    public boolean addCard(Card x)
    {
       return true;    //TOD FIX ME
-   }   
+   }
    public Card removeCard( Card k)
    {
       return this.inspectCard(1);    //TOD FIX ME
    }
 
-   
+
    // Accessor inspects card and returns them or returns illegal message
-   public Card inspectCard(int k) 
+   public Card inspectCard(int k)
    {
       if(topCard == 0 || k < 0 || k > topCard)
       {
@@ -480,8 +478,8 @@ class Deck
          return cards[k];
       }
    }
-   
-   // Place holder 
+
+   // Place holder
    private static void allocateMasterPack()
    {
       if(!isExecuted)
@@ -491,7 +489,7 @@ class Deck
          int k;
          int j;
          char value;
-         
+
          for( k = 0; k < masterPack.length; k++)
          {
             masterPack[k] = new Card();
