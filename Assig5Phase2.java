@@ -37,12 +37,78 @@ class CardTable{
 
    public JPanel pnlComputerHand, pnlHumanHand, pnlPlayArea;
    
-   //static void loadCardIcons() {}
-   //static public Icon getIcon(Card card) 
-   //static public Icon getBackCardIcon()
+   CardTable(String title, int numCardsPerHand, int numPlayers) {
+      
+   }
+}
+   
+class GUICard{   
+   private static Icon[][] iconCards = new ImageIcon[14][4]; // 14 = A thru K + joker
+    private static Icon iconBack;
+    static boolean iconsLoaded = false;
+   
+   static void loadCardIcons()
+   {
+      // build the file names ("AC.gif", "2C.gif", "3C.gif", "TC.gif", etc.)
+      // in a SHORT loop.  For each file name, read it in and use it to
+      // instantiate each of the 57 Icons in the icon[] array.
+      int count = 0;
+      for(int j = 0; j < 4; j++)
+      {
+         for(int k = 0; k <= 13; k++)
+         {
+            iconCards[k][j] = new ImageIcon("images/" + turnIntIntoCardValue(k) 
+            + turnIntIntoCardSuit(j) + ".gif");
+         }
+      }
+   }
+   
+   
+   // turns 0 - 13 into "A", "2", "3", ... "Q", "K", "X"
+   static String turnIntIntoCardValue(int k)
+   {
+      // an idea for a helper method (do it differently if you wish)
+      String returnVal = null;
+      String[] value = {"A", "2", "3", "4", "5", "6", "7", "8", "9",
+                        "T", "J", "Q", "K", "X"};
+      if(k >= 0 && k <= 13)
+      {
+         returnVal = value[k];
+      }
+      else
+      {
+         System.out.println("returning default value A");
+         return value[0];
+      }
+      return returnVal;
+   }
+   
+   // turns 0 - 3 into "C", "D", "H", "S"
+   static String turnIntIntoCardSuit(int j)
+   {
+      // an idea for another helper method (do it differently if you wish)
+      String returnSuit = null;
+      String[] value = {"C", "D", "H", "S"};
+      
+      if(j >= 0 && j <= 3)
+      {
+         returnSuit = value[j];
+      }
+      else
+      {
+         System.out.println("returning default suit C");
+         return value[0];
+      }
+      return returnSuit;
+   }
+   /*
+   static public Icon getIcon(Card card) {
+      return new Icon;
+   }
+   static public Icon getBackCardIcon(){}*/
 }    
 
-
+//Classes copied ofver from assignment M3
 class Card
 {
    //A Public enum Type with added members
