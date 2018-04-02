@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Assignment M5 Phase 3
  * Add Card Framework and create game "High Card".
  * Authors: Christian Guerrero, Jose Garcia, Grace Alvarez, Gabriel Loring
@@ -33,7 +33,7 @@ public class Assig5Phase3
 
       GUICard cardImages = new GUICard();
       cardImages.loadCardIcons();
-      
+
       //You will need an action listener and some rules.  
       //The simplest game would be "high-card" in which you and the computer each play a card, 
       JButton highCardButton = new JButton("HighCard");
@@ -78,6 +78,7 @@ public class Assig5Phase3
 
 class CardTable extends JFrame
 {
+   private static final long serialVersionUID = 1L;
    static int MAX_CARDS_PER_HAND = 56;
    static int MAX_PLAYERS = 2;  // for now, we only allow 2 person games
    private int numCardsPerHand;
@@ -223,7 +224,11 @@ class Card
    
    //card values, T for ten
    public static final char[] cardValue = {'A', '2', '3', '4', '5', '6', '7', 
-      '8', '9', 'T', 'J', 'Q', 'K'};
+      '8', '9', 'T', 'J', 'Q', 'K', 'X'};
+	
+   //put the order of the card values in here with the smallest first, include 'X' for joker
+   public static char[] valueRanks = {'A', '2', '3', '4', '5', '6', '7',
+		      '8', '9', 'T', 'J', 'Q', 'K', 'X'};
    
    //private member data
    private char value;
@@ -321,6 +326,31 @@ class Card
       }
       return false;
    }
+	
+	
+   //Will sort the incoming array of cards using a bubble sort routine.
+   //You can break this up into smaller methods if it gets over 20 lines
+   public static void arraySort(Card[] cards, int arraySize)
+   {
+	   boolean flag = true; //set flag to true for first pass
+	   Card temp; //holds variables
+	   
+	   while (flag)
+	      {
+	         flag = false;    //set flag to false awaiting a possible swap
+	         for (int i = 0; i < arraySize; i++)
+	         {
+	            if ((GUICard.valueAsInt(cards[i].getValue())) >
+	               (GUICard.valueAsInt(cards[i + 1].getValue())))
+	            {
+	               temp = cards[i];   //swap elements
+	               cards[i] = cards[i + 1];
+	               cards[i + 1] = temp;
+	               flag = true;    //shows a swap occurred
+	            }
+	         }
+	      }
+   }
 }
 
 
@@ -411,6 +441,13 @@ class Hand
          return myCards[k];
       }
    }
+	
+   public void sort()
+   {
+	   Card.arraySort(myCards, numCards);
+   }
+	
+	
 }
 
 
@@ -439,7 +476,9 @@ class Deck
    //if no parameters are passed 1 pack is assumed
    public Deck()
    {
-      this(1);  //Todo write me
+      this.numPacks = 1;
+      allocateMasterPack();
+      init(numPacks);
    }
    
    // Accessor for number of cards
@@ -510,8 +549,20 @@ class Deck
    
    public boolean addCard(Card card)
    {
-      cards[topCard++] = card;
-      return true;
+	   int numOfInstances = 0;
+	   for(int i = 0; i < topCard; i++)
+	   {
+		   if(cards[i].equals(card))
+			   numOfInstances++;
+	   }
+	   
+	   if(numOfInstances >= numPacks)
+		   return false;
+	   
+	   cards[topCard].set(card.getValue(), card.getSuit());
+	   topCard++;
+	   
+      return true; 
    } 
 
    public boolean removeCard(Card card)
@@ -532,7 +583,10 @@ class Deck
       return matchFound;
    }
 
-   
+      public void sort()
+   {
+	   Card.arraySort(cards, topCard);
+   }
    // Accessor inspects card and returns them or returns illegal message
    public Card inspectCard(int cardIndex) 
    {
