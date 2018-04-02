@@ -16,7 +16,7 @@ public class Assig5Phase3
       
       Integer numPacksPerDeck = 1;
       Integer numJokersPerPack = 0;
-      Integer numUnusedCardsPerPack = 0;
+      Integer numUnusedCardsPerPack = 52;
       Card[] unusedCardsPerPack = null;
       Integer NUM_PLAYERS= 2;
       Integer NUM_CARDS_PER_HAND= 2;
@@ -33,24 +33,47 @@ public class Assig5Phase3
 
       CardTable xCard = new CardTable("High Card", NUM_CARDS_PER_HAND,NUM_PLAYERS);
 
-      //xCard.pnlComputerHand.add(new JLabel[]);
-      // In the section where you // CREATE LABELS ...,  instead of using generateRandomCard() to 
-      //pick an Icon, you use inspectCard() to do so.
-
-      /*
-
-
+      //Play till we are out of cards
+      while(highCardGame.getNumCardsRemainingInDeck()>=1){
+        //xCard.pnlComputerHand.add(new JLabel[]);
+        // In the section where you // CREATE LABELS ...,  instead of using generateRandomCard() to 
+        //pick an Icon, you use inspectCard() to do so.
 
 
-Make sure that it produces the same output as Phase 2 before coding your game below.
-   5. "High-Card" Game
+        //Make sure that it produces the same output as Phase 2 before coding your game below.
+        //5. "High-Card" Game
 
---You are now perfectly positioned to write a game.  You will need an action listener and some rules.  The simplest game would be "high-card" in which you and the computer each play a card, and the high card takes both (which you place somewhere in a winnings[] array, not your hand).  You have to add JLabels like "You Win" or "Computer Wins".  You need to decide how to select a card from your hand like maybe making each card its own button. Or other ideas??  Also, how does the computer play?  Will you tell it to always try to win by playing the smallest available card that beats yours, and if it can't win, play its smallest card?  Maybe it should intentionally lose certain rounds in order to preserve cards.  You need to decide who plays first (maybe winner of last round?). 
+        //--You are now perfectly positioned to write a game.  
+        
+        //You will need an action listener and some rules.  
+        //The simplest game would be "high-card" in which you and the computer each play a card, 
+        JMenuItem highCard = new JMenuItem("HighCard");
+        highCard.addItemListener(new HighCardListiner());
 
---You need to figure out how to update your cards or the computer's cards to reflect one fewer cards every round so that hands get smaller.  This is the fun part!
-      */
+        //and the high card takes both (which you place somewhere in a winnings[] array, not your hand). 
+        Card winnings[] = new Card[numUnusedCardsPerPack*numPacksPerDeck];
+        
+        //You have to add JLabels like "You Win" or "Computer Wins".  
+        JLabel playerWin = new JLabel("You Win");
+        JLabel computerWin = new JLabel("Computer Wins");
+        //You need to decide how to select a card from your hand like maybe making each card its own button. 
+        //Or other ideas??  Also, how does the computer play?  
+        //Will you tell it to always try to win by playing the smallest available card that beats yours, 
+        //and if it can't win, play its smallest card?  Maybe it should intentionally lose certain rounds in 
+        //order to preserve cards.  You need to decide who plays first (maybe winner of last round?). 
 
-      }   
+        //--You need to figure out how to update your cards or the computer's cards to reflect one fewer 
+        //cards every round so that hands get smaller.  This is the fun part!
+
+        }
+      }  
+      private class HighCardListiner implements addActionListener
+      {
+        public void actionPerformed(ActionEvent e)
+        {
+                return;
+        }
+      } 
 }      
 
 
