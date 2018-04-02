@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Assignment M5 Phase 3
  * Add Card Framework and create game "High Card".
  * Authors: Christian Guerrero, Jose Garcia, Grace Alvarez, Gabriel Loring
@@ -15,7 +15,7 @@ public class Assig5Phase3
    {
       Integer numPacksPerDeck = 1;
       Integer numJokersPerPack = 0;
-      Integer numUnusedCardsPerPack = 52;
+      Integer numUnusedCardsPerPack = 0;
       Card[] unusedCardsPerPack = null;
       Integer NUM_PLAYERS= 2;
       Integer NUM_CARDS_PER_HAND= 2;
@@ -29,7 +29,7 @@ public class Assig5Phase3
       //You deal() from it (one statement).   
       highCardGame.deal();
 
-      CardTable xCard = new CardTable("High Card", NUM_CARDS_PER_HAND,NUM_PLAYERS);
+      CardTable gameTable = new CardTable("High Card", NUM_CARDS_PER_HAND,NUM_PLAYERS);
 
       GUICard cardImages = new GUICard();
       cardImages.loadCardIcons();
@@ -38,7 +38,7 @@ public class Assig5Phase3
       //The simplest game would be "high-card" in which you and the computer each play a card, 
       JButton highCardButton = new JButton("HighCard");
       //highCardButton.addActionListener();
-      xCard.pnlPlayArea.add(highCardButton);
+      gameTable.pnlPlayArea.add(highCardButton);
 
       //and the high card takes both (which you place somewhere in a winnings[] array, not your hand). 
       Card winnings[] = new Card[numUnusedCardsPerPack*numPacksPerDeck];
@@ -52,7 +52,10 @@ public class Assig5Phase3
       while(highCardGame.getNumCardsRemainingInDeck()>=1){
            i++;
            Hand playerCard = highCardGame.getHand(i);
-           Hand computerCard = highCardGame.getHand(i);
+           
+           gameTable.pnlPlayArea.add(new JLabel(GUICard.getIcon(playerCard.inspectCard(1))));
+           //Hand computerCard = highCardGame.getHand(i);
+           //gameTable.pnlPlayArea.add(playedCardLabels[k]);
            //for(int k = 0; k < playerCard.length; k++)
            //{
                 
@@ -78,7 +81,6 @@ public class Assig5Phase3
 
 class CardTable extends JFrame
 {
-   private static final long serialVersionUID = 1L;
    static int MAX_CARDS_PER_HAND = 56;
    static int MAX_PLAYERS = 2;  // for now, we only allow 2 person games
    private int numCardsPerHand;
@@ -165,16 +167,6 @@ class GUICard{
    }
    
    
-   static private int valueAsInt(Card card){
-      int returnVal = 0;
-      String[] value = {"A", "2", "3", "4", "5", "6", "7", "8", "9",
-            "T", "J", "Q", "K", "X"};
-      for(int i = 0; i < value.length; i++){
-         if(value[i].equals(String.valueOf(card.getValue())))
-            returnVal = i;
-      }   
-      return returnVal; 
-   }
 
    
    // turns 0 - 3 into "C", "D", "H", "S"
@@ -196,20 +188,38 @@ class GUICard{
       return returnSuit;
    }
    
-   static private int suitAsInt(Card card){
-      int returnVal = 0;
-      String[] value = {"C", "D", "H", "S"};
-      for(int i = 0; i < value.length; i++){
-         if(value[i].equals(String.valueOf(card.getSuit())))
-            returnVal = i;
-      }   
-      return returnVal; 
-   }
-
    static public Icon getIcon(Card card) {
-      return iconCards[valueAsInt(card)][suitAsInt(card)];  //TOD Check ME
+      loadCardIcons();
+      return iconCards[valueAsInt(card)][suitAsInt(card)]; 
    }
    
+   private static int suitAsInt(Card card)
+   {
+      Card.Suit suiteOfCard = card.getSuit();
+      for(int i = 0; i <= 13; i++)
+      {
+         if(Card.suitValues[i] == suiteOfCard)
+            return i;
+      }
+      return 0;//return default suit clubs.
+   }
+
+   private static int valueAsInt(Card card)
+   {
+      char cardsValue = card.getValue();
+
+      if(cardsValue == 'A')
+         return 0;
+      if(cardsValue == 'X')
+         return 13;
+      for(int i = 0; i <= 11; i++)
+      {
+         if(Card.cardValue[i] == cardsValue)
+            return i + 1;
+      }
+      return 0;
+   }
+
    static public Icon getBackCardIcon(){
       return iconBack;
    }
@@ -221,14 +231,11 @@ class Card
 {
    //A Public enum Type with added members
    public enum Suit{clubs, diamonds, hearts, spades};
+   static Suit[] suitValues = {Suit.clubs, Suit.diamonds, Suit.hearts, Suit.spades};
    
    //card values, T for ten
    public static final char[] cardValue = {'A', '2', '3', '4', '5', '6', '7', 
       '8', '9', 'T', 'J', 'Q', 'K', 'X'};
-	
-   //put the order of the card values in here with the smallest first, include 'X' for joker
-   public static char[] valueRanks = {'A', '2', '3', '4', '5', '6', '7',
-		      '8', '9', 'T', 'J', 'Q', 'K', 'X'};
    
    //private member data
    private char value;
@@ -327,7 +334,35 @@ class Card
       return false;
    }
 	
-	
+
+   static private int valueAsInt(Card card){
+      int returnVal = 0;
+      String[] value = {"A", "2", "3", "4", "5", "6", "7", "8", "9",
+         "T", "J", "Q", "K", "X"};
+      for(int i = 0; i < value.length; i++){
+         if(value[i].equals(String.valueOf(card.getValue())))
+            returnVal = i;
+      }   
+      return returnVal; 
+   }
+   
+   static private int suitAsInt(Card card){
+      int returnVal = 0;
+      String[] value = {"C", "D", "H", "S"};
+      for(int i = 0; i < value.length; i++){
+         if(value[i].equals(String.valueOf(card.getSuit())))
+            returnVal = i;
+         }   
+      return returnVal; 
+   }
+
+   public boolean isGreater(Card secondCard)
+   {
+      if(this.valueAsInt(secondCard) > secondCard)
+         return true;
+      return false;
+   }
+
    //Will sort the incoming array of cards using a bubble sort routine.
    //You can break this up into smaller methods if it gets over 20 lines
    public static void arraySort(Card[] cards, int arraySize)
@@ -340,8 +375,7 @@ class Card
 	         flag = false;    //set flag to false awaiting a possible swap
 	         for (int i = 0; i < arraySize; i++)
 	         {
-	            if ((GUICard.valueAsInt(cards[i].getValue())) >
-	               (GUICard.valueAsInt(cards[i + 1].getValue())))
+	            if (cards[i].isGreater(cards[i + 1]))
 	            {
 	               temp = cards[i];   //swap elements
 	               cards[i] = cards[i + 1];
@@ -583,10 +617,11 @@ class Deck
       return matchFound;
    }
 
-      public void sort()
+   public void sort()
    {
-	   Card.arraySort(cards, topCard);
+      Card.arraySort(cards, topCard);
    }
+
    // Accessor inspects card and returns them or returns illegal message
    public Card inspectCard(int cardIndex) 
    {
