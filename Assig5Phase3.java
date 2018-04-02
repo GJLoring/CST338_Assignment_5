@@ -21,21 +21,26 @@ public class Assig5Phase3
       Integer NUM_PLAYERS= 2;
       Integer NUM_CARDS_PER_HAND= 2;
 
+      //You instantiate a CardGameFramework object at the top of main().
       CardGameFramework highCardGame = new CardGameFramework( 
          numPacksPerDeck, numJokersPerPack,  
          numUnusedCardsPerPack, unusedCardsPerPack, 
          NUM_PLAYERS, NUM_CARDS_PER_HAND);
       
-      // Test Assignment
-      System.out.println("Phase 3\n");
- 
+      //You deal() from it (one statement).   
+      highCardGame.deal();
+
+
+      CardTable xCard = new CardTable("High Card", NUM_CARDS_PER_HAND,NUM_PLAYERS);
+
+      //xCard.pnlComputerHand.add(new JLabel[]);
+      // In the section where you // CREATE LABELS ...,  instead of using generateRandomCard() to 
+      //pick an Icon, you use inspectCard() to do so.
+
       /*
 
-You instantiate a CardGameFramework object at the top of main().
 
-You deal() from it (one statement).
 
-In the section where you // CREATE LABELS ...,  instead of using generateRandomCard() to pick an Icon, you use inspectCard() to do so.
 
 Make sure that it produces the same output as Phase 2 before coding your game below.
    5. "High-Card" Game
@@ -53,7 +58,8 @@ class CardTable extends JFrame
 {
    static int MAX_CARDS_PER_HAND = 56;
    static int MAX_PLAYERS = 2;  // for now, we only allow 2 person games
-
+   private int numCardsPerHand;
+   private int numPlayers;
    public JPanel pnlComputerHand, pnlHumanHand, pnlPlayArea;
    
    CardTable(String title, int numCardsPerHand, int numPlayers){
@@ -82,6 +88,15 @@ class CardTable extends JFrame
          frame.setVisible(true);
 
       }
+   }
+   public int getNumCardsPerHand()
+   {
+      return numCardsPerHand;
+   }
+
+   public int getNumplayers()
+   {
+      return numPlayers;
    }
 }
    
@@ -322,13 +337,14 @@ class Hand
       return true;
    }
    
-   public boolean sort(){
-      return true;   //Todo write me
-   }
-
    public Card playCard(int k)
    {
-      return myCards[k];  //Todo write me
+        Card errorReturn = new Card('F', Card.Suit.spades); 
+
+        if (numCards == 0)
+           return errorReturn;
+        else
+           return myCards[--numCards];
    }
    
    // Returns and removes the card in the top occupied position of the myCards
@@ -470,26 +486,41 @@ class Deck
    }
 
    
-   public boolean addCard(Card x)
+   public boolean addCard(Card card)
    {
-      return true;    //TOD FIX ME
-   }   
-   public Card removeCard( Card k)
+      cards[topCard++] = card;
+      return true;
+   } 
+
+   public boolean removeCard(Card card)
    {
-      return this.inspectCard(1);    //TOD FIX ME
+      boolean matchFound = false;
+
+      for (int i = 0; i < topCard; i++)
+      {
+         while ( cards[i].equals(card) )
+         {
+            cards[i] = cards[topCard - 1];
+            topCard--;
+            matchFound = true;
+            if ( i >= topCard )
+               break;
+         }
+      }
+      return matchFound;
    }
 
    
    // Accessor inspects card and returns them or returns illegal message
-   public Card inspectCard(int k) 
+   public Card inspectCard(int cardIndex) 
    {
-      if(topCard == 0 || k < 0 || k > topCard)
+      if(topCard == 0 || cardIndex < 0 || cardIndex > topCard)
       {
          return new Card('F', Card.Suit.spades);
       }
       else
       {
-         return cards[k];
+         return cards[cardIndex];
       }
    }
    
