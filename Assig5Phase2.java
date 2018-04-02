@@ -12,8 +12,18 @@ import java.util.*;
 
 public class Assig5Phase2
 {
+	
+   static int NUM_CARDS_PER_HAND = 7;
+   static int  NUM_PLAYERS = 2;
+   static JLabel[] computerLabels = new JLabel[NUM_CARDS_PER_HAND];
+   static JLabel[] humanLabels = new JLabel[NUM_CARDS_PER_HAND];  
+   static JLabel[] playedCardLabels  = new JLabel[NUM_PLAYERS]; 
+   static JLabel[] playLabelText  = new JLabel[NUM_PLAYERS]; 
+	
    public static void main(String[] args)
    {
+      int k;
+      Icon tempIcon;
 
       Integer numPacksPerDeck = 1;
       Integer numJokersPerPack = 0;
@@ -25,7 +35,15 @@ public class Assig5Phase2
       // Test Assignment
       System.out.println("Phase 2\n");
 	  CardTable demoCard = new CardTable("Demo Card", 10,1);
-	}
+   }
+	
+   static Card generateRandomCard()
+   {
+      int suit = (int)(Math.random() * 4);
+      int value = (int)(Math.random() * 14);
+
+      return new Card(Card.cardValue[value], Card.Suit.hearts);
+   }
 }
 
 class CardTable extends JFrame
@@ -172,7 +190,11 @@ class Card
 
    //card values, T for ten
    public static final char[] cardValue = {'A', '2', '3', '4', '5', '6', '7',
-      '8', '9', 'T', 'J', 'Q', 'K'};
+      '8', '9', 'T', 'J', 'Q', 'K', 'X'};
+	
+   //put the order of the card values in here with the smallest first, include 'X' for joker
+   public static char[] valueRanks = {'A', '2', '3', '4', '5', '6', '7',
+		      '8', '9', 'T', 'J', 'Q', 'K', 'X'};
 
    //private member data
    private char value;
@@ -270,6 +292,31 @@ class Card
       }
       return false;
    }
+	
+	
+   //Will sort the incoming array of cards using a bubble sort routine.
+   //You can break this up into smaller methods if it gets over 20 lines
+   public static void arraySort(Card[] cards, int arraySize)
+   {
+	   boolean flag = true; //set flag to true for first pass
+	   Card temp; //holds variables
+	   
+	   while (flag)
+	      {
+	         flag = false;    //set flag to false awaiting a possible swap
+	         for (int i = 0; i < arraySize; i++)
+	         {
+	            if ((GUICard.valueAsInt(cards[i].getValue())) >
+	               (GUICard.valueAsInt(cards[i + 1].getValue())))
+	            {
+	               temp = cards[i];   //swap elements
+	               cards[i] = cards[i + 1];
+	               cards[i + 1] = temp;
+	               flag = true;    //shows a swap occurred
+	            }
+	         }
+	      }
+   }
 }
 
 
@@ -308,9 +355,9 @@ class Hand
       return true;
    }
 
-   public boolean sort(){
-      return true;   //Todo write me
-   }
+//   public boolean sort(){
+//      return true;   //Todo write me
+//  }
 
    public Card playCard(int k)
    {
@@ -359,6 +406,13 @@ class Hand
          return myCards[k];
       }
    }
+	
+   public void sort()
+   {
+	   Card.arraySort(myCards, numCards);
+   }
+	
+	
 }
 
 
@@ -387,7 +441,9 @@ class Deck
    //if no parameters are passed 1 pack is assumed
    public Deck()
    {
-      this(1);  //Todo write me
+      this.numPacks = 1;
+      allocateMasterPack();
+      init(numPacks);
    }
 
    // Accessor for number of cards
@@ -455,16 +511,48 @@ class Deck
       return topCard;
    }
 
-
-   public boolean addCard(Card x)
+   //NEW addCard method
+   public boolean addCard(Card card)
    {
+	   int numOfInstances = 0;
+	   for(int i = 0; i < topCard; i++)
+	   {
+		   if(cards[i].equals(card))
+			   numOfInstances++;
+	   }
+	   
+	   if(numOfInstances >= numPacks)
+		   return false;
+	   
+	   cards[topCard].set(card.getValue(), card.getSuit());
+	   topCard++;
+	   
       return true;    //TOD FIX ME
    }
-   public Card removeCard( Card k)
+	
+	
+   //NEW removeCard method
+   public boolean removeCard(Card card)
    {
-      return this.inspectCard(1);    //TOD FIX ME
+	   for(int i = 0; i < topCard; i++)
+	   {
+		   if(cards[i].equals(card))
+		   {
+			   cards[i].set(cards[topCard].getValue(), cards[topCard].getSuit());
+			   cards[topCard] = null;
+			   topCard--;
+			   return true;
+		   }
+	   }
+      return false;    //TOD FIX ME
    }
 
+   
+   //NEW void sort() method
+   public void sort()
+   {
+	   Card.arraySort(cards, topCard);
+   }
 
    // Accessor inspects card and returns them or returns illegal message
    public Card inspectCard(int k)
