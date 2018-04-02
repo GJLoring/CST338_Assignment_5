@@ -47,8 +47,9 @@ public class Assig5Phase3
         
         //You will need an action listener and some rules.  
         //The simplest game would be "high-card" in which you and the computer each play a card, 
-        JMenuItem highCard = new JMenuItem("HighCard");
-        highCard.addItemListener(new HighCardListiner());
+        JButton highCardButton = new JButton("HighCard");
+        //highCardButton.addActionListener();
+        xCard.pnlPlayArea.add(highCardButton);
 
         //and the high card takes both (which you place somewhere in a winnings[] array, not your hand). 
         Card winnings[] = new Card[numUnusedCardsPerPack*numPacksPerDeck];
@@ -64,16 +65,9 @@ public class Assig5Phase3
 
         //--You need to figure out how to update your cards or the computer's cards to reflect one fewer 
         //cards every round so that hands get smaller.  This is the fun part!
-
+         break;
         }
       }  
-      private class HighCardListiner implements addActionListener
-      {
-        public void actionPerformed(ActionEvent e)
-        {
-                return;
-        }
-      } 
 }      
 
 
