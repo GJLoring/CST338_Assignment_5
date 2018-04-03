@@ -42,8 +42,8 @@ public class Assig5Phase3 extends JFrame implements ActionListener
    public void actionPerformed(ActionEvent e) {
       int playerCardIndex;
       int computerCardIndex;
-      Card playerPlayedCard = new Card();
-      Card ComputerPlayedCard = new Card();
+      Card playerSelectedCard = new Card();
+      Card computerSelectedCard = new Card();
 
       // Find which card the operator picked
       for(playerCardIndex = 0; playerCardIndex < NUM_CARDS_PER_HAND; playerCardIndex++)
@@ -53,7 +53,7 @@ public class Assig5Phase3 extends JFrame implements ActionListener
             gameTable.pnlPlayArea.add(playerHandButton[playerCardIndex]);
             playerHandButton[playerCardIndex].setLabel("Player Card: " + highCardGame.getHand(1).inspectCard(playerCardIndex).toString());
             gameTable.pnlHumanHand.revalidate();
-            playerPlayedCard = highCardGame.playCard(1, playerCardIndex);
+            
             break;
          }
   
@@ -63,22 +63,18 @@ public class Assig5Phase3 extends JFrame implements ActionListener
       computerHandLabel[computerCardIndex].setText("Computer Card: " + highCardGame.getHand(2).inspectCard(computerCardIndex).toString());
       gameTable.pnlPlayArea.add(computerHandLabel[computerCardIndex]);
       gameTable.pnlComputerHand.revalidate();
-      ComputerPlayedCard = highCardGame.playCard(2, computerCardIndex);
       
-      System.out.println("Player Card Inspect: " + highCardGame.getHand(1).inspectCard(playerCardIndex).toString());
-      System.out.println("Computer Inspect: " + highCardGame.getHand(2).inspectCard(computerCardIndex).toString());
+      playerSelectedCard = highCardGame.getHand(1).inspectCard(playerCardIndex);
+      computerSelectedCard = highCardGame.getHand(2).inspectCard(computerCardIndex);
 
-      System.out.println("Player Card Inspect: " + playerPlayedCard.toString());
-      System.out.println("Computer Inspect: " + ComputerPlayedCard.toString());
-
-      if(ComputerPlayedCard.isGreater(playerPlayedCard))
+      if(computerSelectedCard.isGreater(playerSelectedCard))
       {
-         gameTable.pnlPlayArea.add(playerWin);
+         gameTable.pnlPlayArea.add(computerWin);
 
       }
       else
       {
-         gameTable.pnlPlayArea.add(computerWin);
+         gameTable.pnlPlayArea.add(playerWin);
       }
 
       gameTable.revalidate();
@@ -416,6 +412,7 @@ class Card
       System.out.println(" Card 2: " + secondCard.toString());
       System.out.println(" Card 1: " + Card.valueAsInt(this));
       System.out.println(" Card 2: " + Card.valueAsInt(secondCard));
+
       if(Card.valueAsInt(this) > Card.valueAsInt(secondCard))
          return true;
       return false;
