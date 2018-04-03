@@ -5,23 +5,55 @@
  * Last Changed: March 30th, 2018
  * 
  */
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.util.*;
 
-public class Assig5Phase3 extends JFrame
+public class Assig5Phase3 extends JFrame implements ActionListener
 {  
+   static CardTable gameTable;// = new CardTable();
    static Integer NUM_PLAYERS= 2;
-   static Integer NUM_CARDS_PER_HAND= 2;
+   static Integer NUM_CARDS_PER_HAND= 4;
 
-   static JLabel[] playerHandLabel = new JLabel[NUM_CARDS_PER_HAND];
+   static JButton[] playerHandButton = new JButton[NUM_CARDS_PER_HAND];
    static JLabel[] computerHandLabel = new JLabel[NUM_CARDS_PER_HAND];
+   static JButton playerCard = new JButton();
    static JLabel playerWin = new JLabel("You Win");
    static JLabel computerWin = new JLabel("Computer Wins");
 
-
    public static void main(String[] args)
    {
+      Assig5Phase3 game = new Assig5Phase3();
+      game.setVisible(true);
+
+   }  
+
+   //You will need an action listener and some rules.  
+   //The simplest game would be "high-card" in which you and the computer each play a card, 
+   public void actionPerformed(ActionEvent e) {
+         System.out.println("ActionEvent Card Clicked: " + e.getActionCommand());
+
+         for(int i = 0; i < NUM_CARDS_PER_HAND; i++)
+            if(e.getSource() == playerHandButton[i])
+            {
+               System.out.println("XX: " + i);
+               gameTable.pnlHumanHand.remove(playerHandButton[i]);
+               gameTable.pnlPlayArea.add(playerHandButton[i]);
+               gameTable.pnlHumanHand.revalidate();
+            }
+               
+      return;
+   }
+
+   public Assig5Phase3(){
       Integer numPacksPerDeck = 1;
       Integer numJokersPerPack = 0;
       Integer numUnusedCardsPerPack = 0;
@@ -37,76 +69,33 @@ public class Assig5Phase3 extends JFrame
       //You deal() from it (one statement).   
       highCardGame.deal();
 
-      CardTable gameTable = new CardTable("M5 Phase 3, High Card", NUM_CARDS_PER_HAND,NUM_PLAYERS);
+      // Create Card Table object
+      gameTable = new CardTable("M5 Phase 3, High Card", NUM_CARDS_PER_HAND,NUM_PLAYERS);
 
-      GUICard cardImages = new GUICard();
+      // Load Images for Cards
       GUICard.loadCardIcons();
-
-      //You will need an action listener and some rules.  
-      //The simplest game would be "high-card" in which you and the computer each play a card, 
-      ImageIcon playIcon = new ImageIcon("images/BK.gif");
-      JButton highCardButton = new JButton(playIcon);
-      //highCardButton.addActionListener(new ActionListener() {
-      //   public void actionPerformed(ActionEvent e) {
-      //      statusLabel.setText("Ok Button clicked.");
-      //   }          
-      //});
-      gameTable.pnlPlayArea.add(highCardButton);
-      
 
       // In the section where you // CREATE LABELS ...,  instead of using generateRandomCard() to 
       //pick an Icon, you use inspectCard() to do so.
-      JButton currentCard = new JButton();
       for(int i = 0; i < NUM_CARDS_PER_HAND; i++){
-         System.out.println("Display hand: " + i + " " + highCardGame.getHand(1).inspectCard(i));
-         //playerHandLabel[i] = new JLabel(GUICard.getIcon( highCardGame.getHand(1).inspectCard(i)));
-         currentCard = new JButton(GUICard.getIcon( highCardGame.getHand(1).inspectCard(i)));
-         gameTable.pnlHumanHand.add(currentCard);
-         
-         System.out.println("Display hand: " + i + " " + highCardGame.getHand(2).inspectCard(i));
+         //Add player cards as Buttons
+         playerHandButton[i] = new JButton(GUICard.getIcon( highCardGame.getHand(1).inspectCard(i)));
+         playerHandButton[i].setActionCommand(highCardGame.getHand(1).inspectCard(i).toString());
+         playerHandButton[i].addActionListener(this);
+         gameTable.pnlHumanHand.add(playerHandButton[i]);
+
+         // Add computer Cards as labels
          computerHandLabel[i] = new JLabel(GUICard.getIcon( highCardGame.getHand(2).inspectCard(i)));
-         
-         //currentCard = new JButton(GUICard.getIcon( highCardGame.getHand(2).inspectCard(i)));
-         //gameTable.pnlHumanHand.add(currentCard);
-         
-         //gameTable.pnlHumanHand.add(playerHandLabel[i]);
          gameTable.pnlComputerHand.add(computerHandLabel[i]);
       }
-      //gameTable.setVisible(true);
+
+
       gameTable.frame.setVisible(true);
-      return;
-      /*
 
-      //Play till we are out of cards
-      int i = 0;
-      Hand playerCard = highCardGame.getHand(i);
-           
-      System.out.println("Cards remiaing " + i + " " + highCardGame.getNumCardsRemainingInDeck());
-      while(highCardGame.getNumCardsRemainingInDeck()>i){
-           i++;
-           //Hand playerCard = highCardGame.getHand(i);
-           System.out.println("Cards remiaing " + i + " " + highCardGame.getNumCardsRemainingInDeck());
-           gameTable.pnlPlayArea.add(new JLabel(GUICard.getIcon(playerCard.inspectCard(1))));
-           //Hand computerCard = highCardGame.getHand(i);
-           //gameTable.pnlPlayArea.add(playedCardLabels[k]);
-           //for(int k = 0; k < playerCard.length; k++)
-           //{
-                
-                //xCard.pnlComputerHand.add(JLabel(computerCard.getIcon()));
-                //xCard.pnlHumanHand.add(JLabel(playerCard.getIcon()));
-           //}
-
-
-        //You need to decide how to select a card from your hand like maybe making each card its own button. 
-        //Or other ideas??  Also, how does the computer play?  
-        //Will you tell it to always try to win by playing the smallest available card that beats yours, 
-        //and if it can't win, play its smallest card?  Maybe it should intentionally lose certain rounds in 
-        //order to preserve cards.  You need to decide who plays first (maybe winner of last round?). 
-
-        //--You need to figure out how to update your cards or the computer's cards to reflect one fewer 
-        //cards every round so that hands get smaller.  This is the fun part!
-        }*/
       }  
+
+
+
 }      
 
 
@@ -136,6 +125,7 @@ class CardTable extends JFrame
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
       pnlComputerHand  = new JPanel();
+      //pnlComputerHand.setLayout(new GridLayout(numCardsPerHand,numPlayers));
       pnlComputerHand.setBorder(BorderFactory.createTitledBorder("Computer Hand"));
 
       pnlPlayArea = new JPanel();
@@ -143,7 +133,7 @@ class CardTable extends JFrame
       pnlPlayArea.setBorder(BorderFactory.createTitledBorder("Playing Hand"));
 
       pnlHumanHand = new JPanel();
-      pnlHumanHand.setLayout(new GridLayout(numCardsPerHand,numPlayers));
+      //pnlHumanHand.setLayout(new GridLayout(numCardsPerHand,numPlayers));
       pnlHumanHand.setBorder(BorderFactory.createTitledBorder("Your Hand"));
 
       frame.add(pnlComputerHand);
