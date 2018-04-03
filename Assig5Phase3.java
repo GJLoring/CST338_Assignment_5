@@ -52,21 +52,21 @@ public class Assig5Phase3 extends JFrame implements ActionListener
             System.out.println("Player Card Index: " + playerCardIndex);
             gameTable.pnlHumanHand.remove(playerHandButton[playerCardIndex]);
             gameTable.pnlPlayArea.add(playerHandButton[playerCardIndex]);
-            playerHandButton[playerCardIndex].setLabel("Player Card: " + highCardGame.getHand(1).inspectCard(playerCardIndex));
+            playerHandButton[playerCardIndex].setLabel("Player Card: " + highCardGame.getHand(1).inspectCard(playerCardIndex).toString());
             gameTable.pnlHumanHand.revalidate();
-
+            break;
          }
   
       // Computer picks its card randomly
       computerCardIndex = (int) (Math.random() * NUM_CARDS_PER_HAND);
       System.out.println("Computer Card index: " + computerCardIndex);
       gameTable.pnlComputerHand.remove(computerHandLabel[computerCardIndex]);
-      computerHandLabel[computerCardIndex].setText("Computer Card: " + highCardGame.getHand(2).inspectCard(computerCardIndex));
+      computerHandLabel[computerCardIndex].setText("Computer Card: " + highCardGame.getHand(2).inspectCard(computerCardIndex).toString());
       gameTable.pnlPlayArea.add(computerHandLabel[computerCardIndex]);
       gameTable.pnlComputerHand.revalidate();
       
-      System.out.println("Player Card Inspect: " + highCardGame.getHand(1).inspectCard(playerCardIndex));
-      System.out.println("Computer Inspect: " + highCardGame.getHand(2).inspectCard(computerCardIndex));
+      System.out.println("Player Card Inspect: " + highCardGame.getHand(1).inspectCard(playerCardIndex).toString());
+      System.out.println("Computer Inspect: " + highCardGame.getHand(2).inspectCard(computerCardIndex).toString());
 
       if(highCardGame.getHand(2).inspectCard(computerCardIndex).isGreater(highCardGame.getHand(1).inspectCard(playerCardIndex)))
       {
@@ -99,9 +99,6 @@ public class Assig5Phase3 extends JFrame implements ActionListener
 
       // Create Card Table object
       gameTable = new CardTable("M5 Phase 3, High Card", NUM_CARDS_PER_HAND,NUM_PLAYERS);
-
-      // Load Images for Cards
-      GUICard.loadCardIcons();
 
       // In the section where you // CREATE LABELS ...,  instead of using generateRandomCard() to 
       //pick an Icon, you use inspectCard() to do so.
@@ -187,6 +184,10 @@ class GUICard{
     private static Icon iconBack;
     static boolean iconsLoaded = false;
    
+   public GUICard(){
+      loadCardIcons();
+   }
+
    static void loadCardIcons()
    {
       // build the file names ("AC.gif", "2C.gif", "3C.gif", "TC.gif", etc.)
@@ -265,7 +266,7 @@ class GUICard{
          return 0;
       if(cardsValue == 'X')
          return 13;
-      for(int i = 0; i <= 11; i++)
+      for(int i = 0; i <= 13; i++)
       {
          if(Card.cardValue[i] == cardsValue)
             return i + 1;
@@ -317,7 +318,8 @@ class Card
       {
          return("** illegal **");
       }
-      return String.valueOf(value) + " of " + suit;
+      //return String.valueOf(value) + " of " + suit;
+      return value + " of " + suit;
    }
    
    /*
