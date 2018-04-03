@@ -7,6 +7,7 @@
  */
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
 import javax.swing.JLabel;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -20,6 +21,7 @@ import java.util.*;
 public class Assig5Phase3 extends JFrame implements ActionListener
 {  
    static CardTable gameTable;// = new CardTable();
+   static CardGameFramework highCardGame;
    static Integer NUM_PLAYERS= 2;
    static Integer NUM_CARDS_PER_HAND= 4;
 
@@ -39,17 +41,36 @@ public class Assig5Phase3 extends JFrame implements ActionListener
    //You will need an action listener and some rules.  
    //The simplest game would be "high-card" in which you and the computer each play a card, 
    public void actionPerformed(ActionEvent e) {
-         System.out.println("ActionEvent Card Clicked: " + e.getActionCommand());
+      int playerCardIndex;
+      int computerCardIndex;
 
-         for(int i = 0; i < NUM_CARDS_PER_HAND; i++)
-            if(e.getSource() == playerHandButton[i])
-            {
-               System.out.println("XX: " + i);
-               gameTable.pnlHumanHand.remove(playerHandButton[i]);
-               gameTable.pnlPlayArea.add(playerHandButton[i]);
-               gameTable.pnlHumanHand.revalidate();
-            }
-               
+      System.out.println("ActionEvent Card Clicked: " + e.getActionCommand());
+
+      // Find which card the operator picked
+      for(playerCardIndex = 0; playerCardIndex < NUM_CARDS_PER_HAND; playerCardIndex++)
+         if(e.getSource() == playerHandButton[playerCardIndex])
+         {
+            System.out.println("Player Card Index: " + playerCardIndex);
+            gameTable.pnlHumanHand.remove(playerHandButton[playerCardIndex]);
+            gameTable.pnlPlayArea.add(playerHandButton[playerCardIndex]);
+            gameTable.pnlHumanHand.revalidate();
+         }
+      
+      // Computer picks its card randomly
+      computerCardIndex = (int) (Math.random() * NUM_CARDS_PER_HAND);
+      System.out.println("Computer Card index: " + computerCardIndex);
+      gameTable.pnlComputerHand.remove(computerHandLabel[computerCardIndex]);
+      gameTable.pnlPlayArea.add(computerHandLabel[computerCardIndex]);
+      gameTable.pnlComputerHand.revalidate();
+      
+      if(highCardGame.getHand(1).inspectCard(computerCardIndex).isGreater(highCardGame.getHand(0).inspectCard(playerCardIndex)))
+      {
+         gameTable.pnlPlayArea.add(computerWin);
+      }
+      else
+      {
+         gameTable.pnlPlayArea.add(playerWin);
+      }
       return;
    }
 
@@ -61,7 +82,7 @@ public class Assig5Phase3 extends JFrame implements ActionListener
       Card winnings[] = new Card[numUnusedCardsPerPack*numPacksPerDeck];
 
       //You instantiate a CardGameFramework object at the top of main().
-      CardGameFramework highCardGame = new CardGameFramework( 
+      highCardGame = new CardGameFramework( 
          numPacksPerDeck, numJokersPerPack,  
          numUnusedCardsPerPack, unusedCardsPerPack, 
          NUM_PLAYERS, NUM_CARDS_PER_HAND);
@@ -383,9 +404,8 @@ class Card
    }
 
    public boolean isGreater(Card secondCard)
-   {
-      
-      if(true)
+   {     
+      if(Card.valueAsInt(this) > Card.valueAsInt(secondCard))
          return true;
       return false;
    }
