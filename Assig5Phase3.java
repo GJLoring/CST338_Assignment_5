@@ -7,7 +7,6 @@
  */
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
 import javax.swing.JLabel;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -53,18 +52,22 @@ public class Assig5Phase3 extends JFrame implements ActionListener
             System.out.println("Player Card Index: " + playerCardIndex);
             gameTable.pnlHumanHand.remove(playerHandButton[playerCardIndex]);
             gameTable.pnlPlayArea.add(playerHandButton[playerCardIndex]);
+            playerHandButton[playerCardIndex].setLabel("Player Card: " + highCardGame.getHand(1).inspectCard(playerCardIndex));
             gameTable.pnlHumanHand.revalidate();
+
          }
-      
+  
       // Computer picks its card randomly
       computerCardIndex = (int) (Math.random() * NUM_CARDS_PER_HAND);
       System.out.println("Computer Card index: " + computerCardIndex);
       gameTable.pnlComputerHand.remove(computerHandLabel[computerCardIndex]);
+      computerHandLabel[computerCardIndex].setText("Computer Card: " + highCardGame.getHand(2).inspectCard(computerCardIndex));
       gameTable.pnlPlayArea.add(computerHandLabel[computerCardIndex]);
       gameTable.pnlComputerHand.revalidate();
       
-      System.out.println("Computer Inspect: " + highCardGame.getHand(2).inspectCard(computerCardIndex));
       System.out.println("Player Card Inspect: " + highCardGame.getHand(1).inspectCard(playerCardIndex));
+      System.out.println("Computer Inspect: " + highCardGame.getHand(2).inspectCard(computerCardIndex));
+
       if(highCardGame.getHand(2).inspectCard(computerCardIndex).isGreater(highCardGame.getHand(1).inspectCard(playerCardIndex)))
       {
          gameTable.pnlPlayArea.add(computerWin);
@@ -73,6 +76,8 @@ public class Assig5Phase3 extends JFrame implements ActionListener
       {
          gameTable.pnlPlayArea.add(playerWin);
       }
+
+      gameTable.revalidate();
       return;
    }
 
@@ -142,7 +147,7 @@ class CardTable extends JFrame
 
       // Layout the table
       frame = new JFrame(title);
-      frame.setSize(800,600);
+      frame.setSize(800,900);
       frame.setLayout(new GridLayout(3,1));
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -151,7 +156,7 @@ class CardTable extends JFrame
       pnlComputerHand.setBorder(BorderFactory.createTitledBorder("Computer Hand"));
 
       pnlPlayArea = new JPanel();
-      pnlPlayArea.setLayout(new GridLayout(1,numPlayers));
+      pnlPlayArea.setLayout(new GridLayout(2,numPlayers));
       pnlPlayArea.setBorder(BorderFactory.createTitledBorder("Playing Hand"));
 
       pnlHumanHand = new JPanel();
