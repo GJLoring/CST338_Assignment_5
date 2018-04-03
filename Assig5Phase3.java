@@ -214,6 +214,7 @@ class GUICard{
       if(k >= 0 && k <= 13)
       {
          returnVal = value[k];
+         System.out.println("For K: " + k + " value = " + returnVal);
       }
       else
       {
@@ -269,7 +270,7 @@ class GUICard{
       for(int i = 0; i <= 13; i++)
       {
          if(Card.cardValue[i] == cardsValue)
-            return i + 1;
+            return i;
       }
       return 0;
    }
@@ -318,8 +319,8 @@ class Card
       {
          return("** illegal **");
       }
-      //return String.valueOf(value) + " of " + suit;
-      return value + " of " + suit;
+      System.out.println("To String: " + value);
+      return String.valueOf(value) + " of " + suit;
    }
    
    /*
