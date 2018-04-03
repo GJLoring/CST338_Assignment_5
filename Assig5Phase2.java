@@ -306,8 +306,7 @@ class Card
 	         flag = false;    //set flag to false awaiting a possible swap
 	         for (int i = 0; i < arraySize; i++)
 	         {
-	            if ((GUICard.valueAsInt(cards[i].getValue())) >
-	               (GUICard.valueAsInt(cards[i + 1].getValue())))
+	            if(valueAsInt(cards[i].value()) > valueAsInt(cards[i + 1].getValue()))
 	            {
 	               temp = cards[i];   //swap elements
 	               cards[i] = cards[i + 1];
