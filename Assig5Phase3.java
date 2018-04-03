@@ -19,6 +19,9 @@ public class Assig5Phase3
       Card[] unusedCardsPerPack = null;
       Integer NUM_PLAYERS= 2;
       Integer NUM_CARDS_PER_HAND= 2;
+      JLabel playerWin = new JLabel("You Win");
+      JLabel computerWin = new JLabel("Computer Wins");
+      Card winnings[] = new Card[numUnusedCardsPerPack*numPacksPerDeck];
 
       //You instantiate a CardGameFramework object at the top of main().
       CardGameFramework highCardGame = new CardGameFramework( 
@@ -39,13 +42,6 @@ public class Assig5Phase3
       JButton highCardButton = new JButton("HighCard");
       //highCardButton.addActionListener();
       gameTable.pnlPlayArea.add(highCardButton);
-
-      //and the high card takes both (which you place somewhere in a winnings[] array, not your hand). 
-      Card winnings[] = new Card[numUnusedCardsPerPack*numPacksPerDeck];
-
-      //You have to add JLabels like "You Win" or "Computer Wins".  
-      JLabel playerWin = new JLabel("You Win");
-      JLabel computerWin = new JLabel("Computer Wins");
       
       //Play till we are out of cards
       int i = 0;
@@ -88,31 +84,38 @@ class CardTable extends JFrame
    public JPanel pnlComputerHand, pnlHumanHand, pnlPlayArea;
    
    CardTable(String title, int numCardsPerHand, int numPlayers){
+
+      // Make sure the cards and players do not exceed max
       if(numCardsPerHand <= MAX_CARDS_PER_HAND && numPlayers <= MAX_PLAYERS) {
-
-         JFrame frame = new JFrame(title);
-         frame.setSize(800,600);
-         frame.setLayout(new GridLayout(3,1));
-         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-         pnlComputerHand  = new JPanel();
-         pnlComputerHand.setBorder(BorderFactory.createTitledBorder("Computer Hand"));
-
-         pnlPlayArea = new JPanel();
-         pnlPlayArea.setLayout(new GridLayout(1,numPlayers));
-         pnlPlayArea.setBorder(BorderFactory.createTitledBorder("Playing Hand"));
-
-         pnlHumanHand = new JPanel();
-         pnlHumanHand.setLayout(new GridLayout(numCardsPerHand,numPlayers));
-         pnlHumanHand.setBorder(BorderFactory.createTitledBorder("Your Hand"));
-
-         frame.add(pnlComputerHand);
-         frame.add(pnlPlayArea);
-         frame.add(pnlHumanHand);
-
-         frame.setVisible(true);
-
+		  this.numPlayers = numPlayers;
+         this.numCardsPerHand = numCardsPerHand;
       }
+	   else
+         return;
+
+      // Layout the table
+      JFrame frame = new JFrame(title);
+      frame.setSize(800,600);
+      frame.setLayout(new GridLayout(3,1));
+      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+      pnlComputerHand  = new JPanel();
+      pnlComputerHand.setBorder(BorderFactory.createTitledBorder("Computer Hand"));
+
+      pnlPlayArea = new JPanel();
+      pnlPlayArea.setLayout(new GridLayout(1,numPlayers));
+      pnlPlayArea.setBorder(BorderFactory.createTitledBorder("Current Game Hand"));
+
+      pnlHumanHand = new JPanel();
+      pnlHumanHand.setLayout(new GridLayout(numCardsPerHand,numPlayers));
+      pnlHumanHand.setBorder(BorderFactory.createTitledBorder("Your Hand"));
+
+      frame.add(pnlComputerHand);
+      frame.add(pnlPlayArea);
+      frame.add(pnlHumanHand);
+
+      frame.setVisible(true);
+
    }
    public int getNumCardsPerHand()
    {
@@ -125,6 +128,7 @@ class CardTable extends JFrame
    }
 }
    
+
 class GUICard{   
    private static Icon[][] iconCards = new ImageIcon[14][4]; // 14 = A thru K + joker
     private static Icon iconBack;
@@ -145,8 +149,7 @@ class GUICard{
       }
       iconBack = new ImageIcon("images/BK.gif");
    }
-   
-   
+    
    // turns 0 - 13 into "A", "2", "3", ... "Q", "K", "X"
    static String turnIntIntoCardValue(int k)
    {
@@ -165,9 +168,6 @@ class GUICard{
       }
       return returnVal;
    }
-   
-   
-
    
    // turns 0 - 3 into "C", "D", "H", "S"
    static String turnIntIntoCardSuit(int j)
@@ -358,7 +358,8 @@ class Card
 
    public boolean isGreater(Card secondCard)
    {
-      if(this.valueAsInt(secondCard) > secondCard)
+      
+      if(true)
          return true;
       return false;
    }
