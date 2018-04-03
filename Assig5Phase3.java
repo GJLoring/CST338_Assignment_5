@@ -46,23 +46,36 @@ public class Assig5Phase3 extends JFrame
       //The simplest game would be "high-card" in which you and the computer each play a card, 
       ImageIcon playIcon = new ImageIcon("images/BK.gif");
       JButton highCardButton = new JButton(playIcon);
-      //highCardButton.addActionListener(gamePlay);
+      //highCardButton.addActionListener(new ActionListener() {
+      //   public void actionPerformed(ActionEvent e) {
+      //      statusLabel.setText("Ok Button clicked.");
+      //   }          
+      //});
       gameTable.pnlPlayArea.add(highCardButton);
       
 
-        // In the section where you // CREATE LABELS ...,  instead of using generateRandomCard() to 
-        //pick an Icon, you use inspectCard() to do so.
+      // In the section where you // CREATE LABELS ...,  instead of using generateRandomCard() to 
+      //pick an Icon, you use inspectCard() to do so.
+      JButton currentCard = new JButton();
       for(int i = 0; i < NUM_CARDS_PER_HAND; i++){
          System.out.println("Display hand: " + i + " " + highCardGame.getHand(1).inspectCard(i));
-         playerHandLabel[i] = new JLabel(GUICard.getIcon( highCardGame.getHand(1).inspectCard(i)));
+         //playerHandLabel[i] = new JLabel(GUICard.getIcon( highCardGame.getHand(1).inspectCard(i)));
+         currentCard = new JButton(GUICard.getIcon( highCardGame.getHand(1).inspectCard(i)));
+         gameTable.pnlHumanHand.add(currentCard);
+         
          System.out.println("Display hand: " + i + " " + highCardGame.getHand(2).inspectCard(i));
          computerHandLabel[i] = new JLabel(GUICard.getIcon( highCardGame.getHand(2).inspectCard(i)));
-
-         gameTable.pnlHumanHand.add(playerHandLabel[i]);
+         
+         //currentCard = new JButton(GUICard.getIcon( highCardGame.getHand(2).inspectCard(i)));
+         //gameTable.pnlHumanHand.add(currentCard);
+         
+         //gameTable.pnlHumanHand.add(playerHandLabel[i]);
          gameTable.pnlComputerHand.add(computerHandLabel[i]);
       }
-      gameTable.setVisible(true);
-
+      //gameTable.setVisible(true);
+      gameTable.frame.setVisible(true);
+      return;
+      /*
 
       //Play till we are out of cards
       int i = 0;
@@ -92,13 +105,14 @@ public class Assig5Phase3 extends JFrame
 
         //--You need to figure out how to update your cards or the computer's cards to reflect one fewer 
         //cards every round so that hands get smaller.  This is the fun part!
-        }
+        }*/
       }  
 }      
 
 
 class CardTable extends JFrame
 {
+   public JFrame frame = new JFrame();
    static int MAX_CARDS_PER_HAND = 56;
    static int MAX_PLAYERS = 2;  // for now, we only allow 2 person games
    private int numCardsPerHand;
@@ -116,7 +130,7 @@ class CardTable extends JFrame
          return;
 
       // Layout the table
-      JFrame frame = new JFrame(title);
+      frame = new JFrame(title);
       frame.setSize(800,600);
       frame.setLayout(new GridLayout(3,1));
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
