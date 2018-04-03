@@ -42,39 +42,43 @@ public class Assig5Phase3 extends JFrame implements ActionListener
    public void actionPerformed(ActionEvent e) {
       int playerCardIndex;
       int computerCardIndex;
-
-      System.out.println("ActionEvent Card Clicked: " + e.getActionCommand());
+      Card playerPlayedCard = new Card();
+      Card ComputerPlayedCard = new Card();
 
       // Find which card the operator picked
       for(playerCardIndex = 0; playerCardIndex < NUM_CARDS_PER_HAND; playerCardIndex++)
          if(e.getSource() == playerHandButton[playerCardIndex])
          {
-            System.out.println("Player Card Index: " + playerCardIndex);
             gameTable.pnlHumanHand.remove(playerHandButton[playerCardIndex]);
             gameTable.pnlPlayArea.add(playerHandButton[playerCardIndex]);
             playerHandButton[playerCardIndex].setLabel("Player Card: " + highCardGame.getHand(1).inspectCard(playerCardIndex).toString());
             gameTable.pnlHumanHand.revalidate();
+            playerPlayedCard = highCardGame.playCard(1, playerCardIndex);
             break;
          }
   
       // Computer picks its card randomly
       computerCardIndex = (int) (Math.random() * NUM_CARDS_PER_HAND);
-      System.out.println("Computer Card index: " + computerCardIndex);
       gameTable.pnlComputerHand.remove(computerHandLabel[computerCardIndex]);
       computerHandLabel[computerCardIndex].setText("Computer Card: " + highCardGame.getHand(2).inspectCard(computerCardIndex).toString());
       gameTable.pnlPlayArea.add(computerHandLabel[computerCardIndex]);
       gameTable.pnlComputerHand.revalidate();
+      ComputerPlayedCard = highCardGame.playCard(2, computerCardIndex);
       
       System.out.println("Player Card Inspect: " + highCardGame.getHand(1).inspectCard(playerCardIndex).toString());
       System.out.println("Computer Inspect: " + highCardGame.getHand(2).inspectCard(computerCardIndex).toString());
 
-      if(highCardGame.getHand(2).inspectCard(computerCardIndex).isGreater(highCardGame.getHand(1).inspectCard(playerCardIndex)))
+      System.out.println("Player Card Inspect: " + playerPlayedCard.toString());
+      System.out.println("Computer Inspect: " + ComputerPlayedCard.toString());
+
+      if(ComputerPlayedCard.isGreater(playerPlayedCard))
       {
-         gameTable.pnlPlayArea.add(computerWin);
+         gameTable.pnlPlayArea.add(playerWin);
+
       }
       else
       {
-         gameTable.pnlPlayArea.add(playerWin);
+         gameTable.pnlPlayArea.add(computerWin);
       }
 
       gameTable.revalidate();
@@ -112,10 +116,6 @@ public class Assig5Phase3 extends JFrame implements ActionListener
          // Add computer Cards as labels
          computerHandLabel[i] = new JLabel(GUICard.getIcon( highCardGame.getHand(2).inspectCard(i)));
          gameTable.pnlComputerHand.add(computerHandLabel[i]);
-
-
-         System.out.println("Computer creator: " + highCardGame.getHand(2).inspectCard(i));
-         System.out.println("Player Card creator: " + highCardGame.getHand(1).inspectCard(i));
       }
       gameTable.frame.setVisible(true);
    }  
@@ -214,7 +214,6 @@ class GUICard{
       if(k >= 0 && k <= 13)
       {
          returnVal = value[k];
-         System.out.println("For K: " + k + " value = " + returnVal);
       }
       else
       {
@@ -319,7 +318,6 @@ class Card
       {
          return("** illegal **");
       }
-      System.out.println("To String: " + value);
       return String.valueOf(value) + " of " + suit;
    }
    
