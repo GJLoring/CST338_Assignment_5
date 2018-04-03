@@ -63,7 +63,9 @@ public class Assig5Phase3 extends JFrame implements ActionListener
       gameTable.pnlPlayArea.add(computerHandLabel[computerCardIndex]);
       gameTable.pnlComputerHand.revalidate();
       
-      if(highCardGame.getHand(1).inspectCard(computerCardIndex).isGreater(highCardGame.getHand(0).inspectCard(playerCardIndex)))
+      System.out.println("Computer Inspect: " + highCardGame.getHand(2).inspectCard(computerCardIndex));
+      System.out.println("Player Card Inspect: " + highCardGame.getHand(1).inspectCard(playerCardIndex));
+      if(highCardGame.getHand(2).inspectCard(computerCardIndex).isGreater(highCardGame.getHand(1).inspectCard(playerCardIndex)))
       {
          gameTable.pnlPlayArea.add(computerWin);
       }
@@ -108,14 +110,13 @@ public class Assig5Phase3 extends JFrame implements ActionListener
          // Add computer Cards as labels
          computerHandLabel[i] = new JLabel(GUICard.getIcon( highCardGame.getHand(2).inspectCard(i)));
          gameTable.pnlComputerHand.add(computerHandLabel[i]);
+
+
+         System.out.println("Computer creator: " + highCardGame.getHand(2).inspectCard(i));
+         System.out.println("Player Card creator: " + highCardGame.getHand(1).inspectCard(i));
       }
-
-
       gameTable.frame.setVisible(true);
-
-      }  
-
-
+   }  
 
 }      
 
@@ -405,6 +406,10 @@ class Card
 
    public boolean isGreater(Card secondCard)
    {     
+      System.out.println(" Card 1: " + this.toString());
+      System.out.println(" Card 2: " + secondCard.toString());
+      System.out.println(" Card 1: " + Card.valueAsInt(this));
+      System.out.println(" Card 2: " + Card.valueAsInt(secondCard));
       if(Card.valueAsInt(this) > Card.valueAsInt(secondCard))
          return true;
       return false;
